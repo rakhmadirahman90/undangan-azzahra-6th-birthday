@@ -178,6 +178,8 @@ document.getElementById('share').onclick=()=>{const url='https://wa.me/?text='+e
 document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);showToast('Tautan berhasil disalin')}catch(e){showToast('Silakan salin alamat website dari browser')}};
 let audioCtx=null,playing=false,loopTimer=null,runId=0,activeNodes=[];
 const birthdayMp3=new Audio('AUD-20261013-WA0015.mp3');birthdayMp3.loop=true;birthdayMp3.preload='auto';birthdayMp3.volume=.65;let usingMp3=false;
+// Loop bawaan ditambah pengaman ketika event ended tetap terpanggil.
+birthdayMp3.addEventListener('ended',()=>{if(!playing||!usingMp3)return;birthdayMp3.currentTime=0;birthdayMp3.play().catch(()=>{playing=false;usingMp3=false;musicLabel()})});
 const melody=[[392,1],[392,.5],[440,1.5],[392,1.5],[523.25,1.5],[493.88,3],[392,1],[392,.5],[440,1.5],[392,1.5],[587.33,1.5],[523.25,3],[392,1],[392,.5],[783.99,1.5],[659.25,1.5],[523.25,1.5],[493.88,1.5],[440,3],[698.46,1],[698.46,.5],[659.25,1.5],[523.25,1.5],[587.33,1.5],[523.25,3]];
 const bpm=128,step=60/bpm/2;
 function tone(freq,t,dur,type,vol){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+dur+.02);activeNodes.push(o)}
@@ -187,7 +189,7 @@ function musicLabel(){const el=document.getElementById('music');el.classList.tog
 async function startMusic(){if(playing)return;try{await birthdayMp3.play();usingMp3=true;playing=true;musicLabel();return}catch(e){usingMp3=false;birthdayMp3.pause()}try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('unsupported');audioCtx=audioCtx||new AC();await audioCtx.resume();if(audioCtx.state!=='running')throw Error('suspended');playing=true;runId++;musicLabel();scheduleDance(runId)}catch(e){playing=false;musicLabel();showToast('Ketuk Putar Musik Ceria untuk mencoba kembali')}}
 function stopMusic(){playing=false;birthdayMp3.pause();usingMp3=false;runId++;clearTimeout(loopTimer);for(const node of activeNodes){try{node.stop()}catch(e){}}activeNodes=[];if(audioCtx&&audioCtx.state==='running')audioCtx.suspend();musicLabel()}
 document.getElementById('music').onclick=()=>playing?stopMusic():startMusic();
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing)stopMusic()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing&&!usingMp3)stopMusic()});
 
 /* Buku ucapan online bersama melalui Supabase dengan akses RLS */
 const wishesUrl='https://tkqckjzmahlawbywprkn.supabase.co/rest/v1/birthday_wishes',wishesKey='sb_publishable_kJa8bjjBQ0dU9W8NIM0XKQ_YbLgILV8';
