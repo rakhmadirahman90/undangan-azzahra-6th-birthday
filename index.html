@@ -146,6 +146,9 @@ const message=[
 '🦋🎀 *UNDANGAN ULANG TAHUN KE-6* 🎀🦋',
 '*AZZAHRA ZHAFIRA ABUSTAM*',
 '',
+'💌 *Buka Undangan Digital Zhafira:*',
+invitationUrl,
+'',
 '━━━━━━━━━━━━━━━━━━━━',
 'Assalamu’alaikum Warahmatullahi Wabarakatuh.',
 '',
@@ -169,8 +172,7 @@ const message=[
 '💗 *Salam hangat,*',
 '*Keluarga Azzahra Zhafira Abustam*',
 '',
-'💌 *Buka undangan digital lengkap dan petunjuk lokasi:*',
-invitationUrl
+'🦋🌸 *Sampai bertemu di pesta ulang tahun Zhafira!* 🎂🎉'
 ].join(String.fromCharCode(10));
 document.getElementById('share').onclick=()=>{const url='https://wa.me/?text='+encodeURIComponent(message);const w=window.open(url,'_blank','noopener,noreferrer');if(!w)window.location.href=url};
 document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);showToast('Tautan berhasil disalin')}catch(e){showToast('Silakan salin alamat website dari browser')}};
