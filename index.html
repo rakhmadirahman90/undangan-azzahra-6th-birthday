@@ -58,7 +58,7 @@ invitationUrl
 document.getElementById('share').onclick=()=>{const url='https://wa.me/?text='+encodeURIComponent(message);const w=window.open(url,'_blank','noopener,noreferrer');if(!w)window.location.href=url};
 document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);showToast('Tautan berhasil disalin')}catch(e){showToast('Silakan salin alamat website dari browser')}};
 let audioCtx=null,playing=false,loopTimer=null,runId=0,activeNodes=[];
-const birthdayMp3=new Audio('musik-ulang-tahun-zhafira.mp3');birthdayMp3.loop=true;birthdayMp3.preload='none';birthdayMp3.volume=.65;let usingMp3=false;
+const birthdayMp3=new Audio('the_mountain-birthday-490600.mp3');birthdayMp3.loop=true;birthdayMp3.preload='auto';birthdayMp3.volume=.65;let usingMp3=false;
 const melody=[[392,1],[392,.5],[440,1.5],[392,1.5],[523.25,1.5],[493.88,3],[392,1],[392,.5],[440,1.5],[392,1.5],[587.33,1.5],[523.25,3],[392,1],[392,.5],[783.99,1.5],[659.25,1.5],[523.25,1.5],[493.88,1.5],[440,3],[698.46,1],[698.46,.5],[659.25,1.5],[523.25,1.5],[587.33,1.5],[523.25,3]];
 const bpm=128,step=60/bpm/2;
 function tone(freq,t,dur,type,vol){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+dur+.02);activeNodes.push(o)}
